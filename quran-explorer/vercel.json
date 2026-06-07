@@ -1,7 +1,4 @@
 {
-  "functions": {
-    "api/*.js": {
-      "runtime": "edge"
-    }
-  }
+  "devCommand": "npm run dev:vite",
+  "framework": "vite"
 }

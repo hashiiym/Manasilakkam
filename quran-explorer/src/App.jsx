@@ -6,6 +6,8 @@ import ResultPage from './pages/ResultPage';
 import BrowsePage from './pages/BrowsePage';
 import AboutPage from './pages/AboutPage';
 
+import NotFoundPage from './pages/NotFoundPage';
+
 function App() {
   return (
     <Router>
@@ -17,6 +19,7 @@ function App() {
           <Route path="/verse/:surah/:ayah" element={<ResultPage />} />
           <Route path="/browse" element={<BrowsePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </PageWrapper>
     </Router>

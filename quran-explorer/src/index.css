@@ -10,4 +10,13 @@
     --font-inter: 'Inter', sans-serif;
     --font-noto-malayalam: 'Noto Sans Malayalam', sans-serif;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  *:focus-visible {
+    outline: 2px solid theme('colors.sandal.500');
+    outline-offset: 2px;
+  }
 }
