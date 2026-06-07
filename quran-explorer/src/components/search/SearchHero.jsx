@@ -69,7 +69,7 @@ const SearchHero = () => {
         Understand the Quran deeply — search by Surah name, verse reference, or topic
       </p>
 
-      <div className={`relative z-10 w-full max-w-[560px] transition-transform ${isShaking ? 'animate-shake' : ''}`}>
+      <div className={`relative z-50 w-full max-w-2xl mx-auto transition-transform ${isShaking ? 'animate-shake' : ''}`}>
         <form 
           onSubmit={handleSearch} 
           className="w-full flex items-center bg-sandal-50 border border-sandal-200 rounded-xl p-2"
@@ -97,7 +97,7 @@ const SearchHero = () => {
         </form>
 
         {suggestions.length > 0 && (
-          <div className="absolute top-full left-0 w-full bg-white border border-sandal-200 rounded-xl shadow-lg mt-2 overflow-hidden z-50 text-left">
+          <div className="absolute top-full left-0 w-full mt-2 bg-white rounded-xl shadow-lg border border-sandal-200 overflow-hidden text-left">
             {suggestions.map((s) => (
               <button
                 key={s.number}

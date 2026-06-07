@@ -15,7 +15,7 @@ function App() {
     <Router>
       <PageWrapper>
         <Header />
-        <main className="flex-1 w-full flex flex-col relative z-10">
+        <main className="flex-grow flex flex-col w-full relative z-10">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/surah/:id" element={<ResultPage />} />
