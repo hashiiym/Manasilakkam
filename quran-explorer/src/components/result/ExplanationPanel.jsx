@@ -81,18 +81,6 @@ const ExplanationPanel = ({ result }) => {
         content={result.verse_by_verse} 
       />
       <AccordionItem 
-        title="Spiritual Lessons" 
-        content={result.spiritual_lessons} 
-      />
-      <AccordionItem 
-        title="Scholarly Perspectives" 
-        content={result.scholarly_perspectives} 
-      />
-      <AccordionItem 
-        title="Related Verses" 
-        content={result.cross_references} 
-      />
-      <AccordionItem 
         title="A Moment to Reflect" 
         content={result.reflection_prompt} 
         isReflect={true}

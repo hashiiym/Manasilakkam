@@ -17,9 +17,6 @@ Use this exact JSON structure:
   "malayalam_translation": "Malayalam script translation using authentic Islamic Malayalam vocabulary as used in Kerala",
   "context_background": "2-3 paragraphs: when revealed, occasion (Asbab al-Nuzul), Meccan or Medinan context",
   "verse_by_verse": "detailed breakdown of key Arabic phrases and their theological and linguistic meaning",
-  "spiritual_lessons": "practical lessons this Surah/verse teaches a Muslim in daily life",
-  "scholarly_perspectives": "brief references to Ibn Kathir, Al-Tabari, or Maududi tafsir without being academic-heavy",
-  "cross_references": "2-3 related Quranic verses with their references and brief connection note",
   "reflection_prompt": "one thoughtful question or contemplation to leave the reader reflecting"
 }
 
@@ -30,7 +27,7 @@ Rules:
 - If the query is ambiguous, choose the most famous or commonly referenced match
 - If the query is not related to the Quran at all, return:
   { "error": "not_quran", "message": "Please search for a Surah name, verse reference, or Quranic topic." }
-- Malayalam must use authentic Kerala Islamic vocabulary, not a word-for-word Malayalam dictionary translation`;
+- Because you are writing for small, 10-verse chunk intervals, maximize your processing capabilities to provide a deeply empathetic, highly natural, human-friendly contemporary Malayalam translation (ലളിതമായ ശൈലി). Avoid stiff literalism or archaic terms; phrase theological elements using clear everyday imagery and conversational sentence pacing.`;
 
 export const buildPrompt = (query) => {
   return [
