@@ -11,7 +11,18 @@ const ResultCard = ({ result }) => {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
 
-  const isVerseSearch = result.verse_reference && result.verse_reference.includes(':');
+  let ayahNumber = null;
+  if (result.verse_reference && result.verse_reference.includes(':')) {
+    const parts = result.verse_reference.split(':');
+    if (parts.length > 1) {
+      ayahNumber = parseInt(parts[1].split('-')[0], 10);
+    }
+  }
+
+  // It's a verse search if it has a colon, BUT not if it's the entire Surah range (e.g. 1-286)
+  const isVerseSearch = result.verse_reference && 
+                        result.verse_reference.includes(':') && 
+                        !result.verse_reference.includes(`1-${result.verse_count}`);
 
   const handleShare = async () => {
     const shareData = {
@@ -94,7 +105,7 @@ const ResultCard = ({ result }) => {
         )}
 
         <ArabicPanel text={result.arabic_text} />
-        <AudioPlayer surahNumber={result.surah_number} ayahNumber={result.verse_number || null} />
+        <AudioPlayer surahNumber={result.surah_number} ayahNumber={ayahNumber} />
         <TranslationPanel result={result} />
         <ExplanationPanel result={result} />
       </div>
