@@ -1,4 +1,4 @@
-import { buildPrompt } from '../src/utils/geminiPrompt.js';
+import { SYSTEM_PROMPT } from '../src/utils/geminiPrompt.js';
 
 export const config = {
   runtime: 'edge',
@@ -22,27 +22,30 @@ export default async function handler(req) {
       });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey || apiKey === 'your_key_here') {
-      return new Response(JSON.stringify({ error: true, message: 'API key not configured correctly' }), { 
+      return new Response(JSON.stringify({ error: true, message: 'Groq API key not configured correctly' }), { 
         status: 500, 
         headers: { 'Content-Type': 'application/json' } 
       });
     }
 
-    const contents = buildPrompt(query);
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
+    const url = 'https://api.groq.com/openai/v1/chat/completions';
     
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        contents,
-        generationConfig: {
-          responseMimeType: "application/json",
-        }
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: `Search Query: ${query}` }
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.3
       })
     });
 
@@ -55,14 +58,14 @@ export default async function handler(req) {
           headers: { 'Content-Type': 'application/json' } 
         });
       }
-      return new Response(JSON.stringify({ error: true, type: 'network', message: `Gemini API error: ${status} - ${errText}` }), { 
+      return new Response(JSON.stringify({ error: true, type: 'network', message: `Groq API error: ${status} - ${errText}` }), { 
         status: 500, 
         headers: { 'Content-Type': 'application/json' } 
       });
     }
 
     const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const text = data.choices?.[0]?.message?.content;
     
     if (!text) {
       return new Response(JSON.stringify({ error: true, type: 'unknown', message: 'Invalid response from AI' }), { 
@@ -77,6 +80,14 @@ export default async function handler(req) {
     } catch (e) {
       const cleaned = text.replace(/^```json\n?|```$/g, '').trim();
       parsed = JSON.parse(cleaned);
+    }
+
+    // Handle graceful error format from prompt rules
+    if (parsed.error === 'not_quran') {
+      return new Response(JSON.stringify(parsed), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     return new Response(JSON.stringify(parsed), {
