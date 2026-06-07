@@ -61,15 +61,7 @@ const SearchHero = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] text-center animate-fadeIn px-4 relative overflow-hidden z-0">
-      
-      {/* Decorative Background Texture */}
-      <img 
-        src="/mandala-bg.jpg" 
-        alt="" 
-        className="absolute -z-10 pointer-events-none select-none opacity-20 mix-blend-multiply transition-all duration-700 top-0 -right-16 w-80 md:-top-10 md:-right-20 md:w-[500px] lg:-top-20 lg:-right-40 lg:w-[800px]" 
-      />
-
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] text-center animate-fadeIn px-4">
       <h1 className="font-cormorant text-[48px] text-sandal-700 mb-4 leading-tight relative z-10">
         Manasilakkam
       </h1>

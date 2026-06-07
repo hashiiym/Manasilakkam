@@ -15,15 +15,17 @@ function App() {
     <Router>
       <PageWrapper>
         <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/surah/:id" element={<ResultPage />} />
-          <Route path="/verse/:surah/:ayah" element={<ResultPage />} />
-          <Route path="/browse" element={<BrowsePage />} />
-          <Route path="/tasbih" element={<TasbihPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        <main className="flex-1 w-full flex flex-col relative z-10">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/surah/:id" element={<ResultPage />} />
+            <Route path="/verse/:surah/:ayah" element={<ResultPage />} />
+            <Route path="/browse" element={<BrowsePage />} />
+            <Route path="/tasbih" element={<TasbihPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </main>
         <Footer />
       </PageWrapper>
     </Router>
