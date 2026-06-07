@@ -37,7 +37,7 @@ const ResultCard = ({ result }) => {
     <div className="bg-white border border-sandal-200 rounded-xl overflow-hidden shadow-sm animate-fadeIn" style={{ animationDuration: '400ms' }}>
       
       {/* Top Header Bar */}
-      <div className="bg-sandal-50/95 border-b border-sandal-200 px-4 py-3 sm:px-6 flex items-center justify-between">
+      <div className="bg-white/80 backdrop-blur-md border-b border-sandal-200 px-4 py-3 sm:px-6 flex items-center justify-between z-10 sticky top-0">
         <div className="font-inter text-[13px] text-sandal-500 flex items-center flex-wrap gap-1">
           <Link to="/" className="hover:text-sandal-700 hover:underline transition-colors">Home</Link>
           <span className="mx-1">/</span>

@@ -27,7 +27,7 @@ const SearchHero = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] text-center animate-fadeIn px-4">
       <h1 className="font-cormorant text-[48px] text-sandal-700 mb-4 leading-tight">
-        Quran Explorer
+        Manasilakkam
       </h1>
       <p className="font-lora text-[18px] text-sandal-500 mb-8 max-w-[600px]">
         Understand the Quran deeply — search by Surah name, verse reference, or topic
@@ -52,7 +52,7 @@ const SearchHero = () => {
         />
         <button
           type="submit"
-          className="ml-2 px-6 py-2 bg-sandal-700 text-white font-cormorant text-[16px] rounded-lg hover:bg-sandal-900 transition-colors"
+          className="ml-2 px-6 py-2 bg-sandal-700 text-white font-cormorant text-[16px] rounded-lg hover:bg-sandal-900 transition-all duration-300 ease-in-out"
         >
           Search
         </button>
@@ -64,7 +64,7 @@ const SearchHero = () => {
             key={suggestion}
             type="button"
             onClick={() => handleChipClick(suggestion)}
-            className="px-4 py-1.5 bg-sandal-100 text-sandal-700 border border-sandal-200 rounded-full text-sm font-inter hover:bg-sandal-200 transition-colors"
+            className="px-4 py-1.5 bg-sandal-100 text-sandal-700 border border-sandal-200 rounded-full text-sm font-inter hover:bg-sandal-200 transition-all duration-300 ease-in-out"
           >
             {suggestion}
           </button>

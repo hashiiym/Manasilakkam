@@ -4,7 +4,7 @@ export default function SurahListItem({ surah }) {
   return (
     <Link 
       to={`/surah/${surah.number}`}
-      className="flex items-center justify-between p-4 mb-2 rounded-xl transition-colors duration-150 hover:bg-sandal-50 group border border-transparent hover:border-sandal-200"
+      className="flex items-center justify-between p-4 mb-2 rounded-xl transition-all duration-300 ease-in-out hover:bg-sandal-50 group border border-transparent hover:border-sandal-200"
     >
       <div className="flex items-center gap-4">
         <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-sandal-100 text-sandal-700 font-inter text-[13px] font-bold">

@@ -9,8 +9,8 @@ const Header = () => {
 
   return (
     <header className="py-4 md:py-6 flex items-center justify-between border-b border-sandal-100 mb-8 relative z-50">
-      <Link to="/" className="text-3xl font-cormorant font-bold text-sandal-700" onClick={closeMenu}>
-        Quran Explorer
+      <Link to="/" className="text-3xl font-cormorant font-bold text-sandal-700 transition-all duration-300 ease-in-out" onClick={closeMenu}>
+        Manasilakkam
       </Link>
       
       {/* Desktop Nav */}

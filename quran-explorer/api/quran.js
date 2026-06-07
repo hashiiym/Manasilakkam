@@ -81,7 +81,10 @@ export default async function handler(req) {
 
     return new Response(JSON.stringify(parsed), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'Cache-Control': 's-maxage=86400, stale-while-revalidate'
+      }
     });
   } catch (error) {
     return new Response(JSON.stringify({ error: true, type: 'unknown', message: error.message }), {

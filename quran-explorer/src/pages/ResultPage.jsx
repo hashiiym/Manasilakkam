@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useGemini } from '../hooks/useGemini';
 import ResultCard from '../components/result/ResultCard';
+import ResultSkeleton from '../components/result/ResultSkeleton';
 
 const ResultPage = () => {
   const { id, surah, ayah } = useParams();
@@ -20,7 +21,7 @@ const ResultPage = () => {
 
   useEffect(() => {
     if (result && !loading && !error) {
-      const title = `${result.surah_name_english}${result.verse_reference ? ` ${result.verse_reference}` : ''} · Quran Explorer`;
+      const title = `${result.surah_name_english}${result.verse_reference ? ` ${result.verse_reference}` : ''} · Manasilakkam`;
       document.title = title;
       
       let metaDesc = document.querySelector('meta[name="description"]');
@@ -48,8 +49,8 @@ const ResultPage = () => {
   return (
     <>
       {result && !loading && !error && (
-        <div className="sticky top-0 z-50 bg-white border-b border-sandal-200 px-6 py-3 shadow-sm animate-fadeIn">
-          <form onSubmit={handleSearch} className="max-w-3xl mx-auto flex items-center bg-sandal-50 border border-sandal-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-sandal-300 transition-all">
+        <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-sandal-200 px-6 py-3 shadow-sm animate-fadeIn">
+          <form onSubmit={handleSearch} className="max-w-3xl mx-auto flex items-center bg-sandal-50/80 border border-sandal-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-sandal-500 transition-all">
             <div className="pl-3 pr-2 text-sandal-500">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -61,7 +62,7 @@ const ResultPage = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search Surahs or verses..."
-              className="w-full bg-transparent border-none outline-none font-inter text-[15px] text-sandal-900 py-2 min-w-0"
+              className="w-full bg-transparent border-none outline-none font-inter text-[15px] text-sandal-900 py-2 min-w-0 focus:ring-0"
             />
           </form>
         </div>
@@ -69,7 +70,7 @@ const ResultPage = () => {
 
       <div className="py-6 px-4 md:px-0 animate-fadeIn max-w-4xl mx-auto">
         {loading && (
-          <div className="w-full h-[600px] bg-sandal-100/50 animate-pulse rounded-xl border border-sandal-200"></div>
+          <ResultSkeleton />
         )}
 
         {error && !loading && (
