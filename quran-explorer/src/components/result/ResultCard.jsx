@@ -6,8 +6,9 @@ import TranslationPanel from './TranslationPanel';
 import ExplanationPanel from './ExplanationPanel';
 import DisclaimerFooter from './DisclaimerFooter';
 import AudioPlayer from '../audio/AudioPlayer';
+import PaginationControls from './PaginationControls';
 
-const ResultCard = ({ result }) => {
+const ResultCard = ({ result, paginationProps }) => {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
 
@@ -110,6 +111,7 @@ const ResultCard = ({ result }) => {
         <ExplanationPanel result={result} />
       </div>
 
+      {paginationProps && <PaginationControls {...paginationProps} />}
       <DisclaimerFooter />
     </div>
   );

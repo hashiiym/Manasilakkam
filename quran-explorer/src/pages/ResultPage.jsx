@@ -3,21 +3,80 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useGemini } from '../hooks/useGemini';
 import ResultCard from '../components/result/ResultCard';
 import ResultSkeleton from '../components/result/ResultSkeleton';
+import { SURAHS } from '../constants/surahs';
+
+const CHUNK_SIZE = 10;
 
 const ResultPage = () => {
   const { id, surah, ayah } = useParams();
   const navigate = useNavigate();
   const { result, loading, error, search } = useGemini();
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentChunk, setCurrentChunk] = useState(1);
 
   const query = surah && ayah ? `${surah}:${ayah}` : id;
 
+  // Reset chunk when the route parameters change
+  useEffect(() => {
+    setCurrentChunk(1);
+  }, [id, surah, ayah]);
+
   useEffect(() => {
     if (query) {
-      search(query);
       setSearchQuery(query);
+
+      let isFullSurahMatch = false;
+      let matchedSurah = null;
+      
+      const isVerseSearch = query.includes(':');
+      if (!isVerseSearch) {
+        matchedSurah = SURAHS.find(s => 
+          s.number.toString() === query || 
+          s.nameTransliterated.toLowerCase() === query.toLowerCase() ||
+          s.nameEnglish.toLowerCase() === query.toLowerCase()
+        );
+        if (matchedSurah) {
+          isFullSurahMatch = true;
+        }
+      }
+
+      if (isFullSurahMatch && matchedSurah.verseCount > 15) {
+        const start = (currentChunk - 1) * CHUNK_SIZE + 1;
+        const end = Math.min(start + CHUNK_SIZE - 1, matchedSurah.verseCount);
+        search(`${matchedSurah.nameTransliterated}, verses ${start}-${end}`);
+      } else {
+        search(query);
+      }
     }
-  }, [id, surah, ayah, search]);
+  }, [id, surah, ayah, search, currentChunk]);
+
+  let paginationProps = null;
+  if (result && !loading && !error) {
+    const matchedSurah = SURAHS.find(s => s.number === result.surah_number);
+    const isVerseSearchUrl = (surah && ayah) || (id && id.includes(':'));
+    
+    if (matchedSurah && matchedSurah.verseCount > 15 && !isVerseSearchUrl) {
+      const totalChunks = Math.ceil(matchedSurah.verseCount / CHUNK_SIZE);
+      const startVerse = (currentChunk - 1) * CHUNK_SIZE + 1;
+      const endVerse = Math.min(startVerse + CHUNK_SIZE - 1, matchedSurah.verseCount);
+      
+      paginationProps = {
+        currentChunk,
+        totalChunks,
+        startVerse,
+        endVerse,
+        totalVerses: matchedSurah.verseCount,
+        onNext: () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setCurrentChunk(prev => Math.min(prev + 1, totalChunks));
+        },
+        onPrev: () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setCurrentChunk(prev => Math.max(prev - 1, 1));
+        }
+      };
+    }
+  }
 
   useEffect(() => {
     if (result && !loading && !error) {
@@ -111,7 +170,7 @@ const ResultPage = () => {
 
         {result && !loading && !error && (
           <div className="space-y-6">
-            <ResultCard result={result} />
+            <ResultCard result={result} paginationProps={paginationProps} />
             
             <div className="flex items-center justify-between px-2 pt-2 pb-8">
               {result.surah_number > 1 ? (
