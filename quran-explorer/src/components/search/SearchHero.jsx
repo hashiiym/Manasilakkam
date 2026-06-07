@@ -1,13 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { surahs } from '../../constants/surahs';
 
 const SearchHero = () => {
   const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
   const [isShaking, setIsShaking] = useState(false);
   const navigate = useNavigate();
 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    
+    if (!value.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    const lowerVal = value.toLowerCase();
+    const filtered = surahs.filter((s) => 
+      s.nameEnglish.toLowerCase().includes(lowerVal) ||
+      s.nameTransliterated.toLowerCase().includes(lowerVal) ||
+      s.nameArabic.includes(value) ||
+      s.number.toString() === value
+    ).slice(0, 5);
+    
+    setSuggestions(filtered);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setSuggestions([]);
+    }
+  };
+
   const handleSearch = (e) => {
     if (e) e.preventDefault();
+    setSuggestions([]);
     const trimmedQuery = query.trim();
     if (!trimmedQuery) {
       setIsShaking(true);
@@ -15,6 +44,13 @@ const SearchHero = () => {
       return;
     }
     navigate(`/surah/${encodeURIComponent(trimmedQuery)}`);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    const text = suggestion.nameTransliterated;
+    setQuery(text);
+    setSuggestions([]);
+    navigate(`/surah/${encodeURIComponent(text)}`);
   };
 
   const handleChipClick = (suggestion) => {
@@ -33,30 +69,57 @@ const SearchHero = () => {
         Understand the Quran deeply — search by Surah name, verse reference, or topic
       </p>
 
-      <form 
-        onSubmit={handleSearch} 
-        className={`relative w-full max-w-[560px] flex items-center bg-sandal-50 border border-sandal-200 rounded-xl p-2 transition-transform ${isShaking ? 'animate-shake' : ''}`}
-      >
-        <div className="pl-3 pr-2 text-sandal-700">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </div>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="e.g. Al-Fatiha · 2:255 · verse about patience"
-          className="flex-1 bg-transparent border-none outline-none font-lora text-[17px] text-sandal-900 placeholder-sandal-500 min-w-0"
-        />
-        <button
-          type="submit"
-          className="ml-2 px-6 py-2 bg-sandal-700 text-white font-cormorant text-[16px] rounded-lg hover:bg-sandal-900 transition-all duration-300 ease-in-out"
+      <div className={`relative w-full max-w-[560px] transition-transform ${isShaking ? 'animate-shake' : ''}`}>
+        <form 
+          onSubmit={handleSearch} 
+          className="w-full flex items-center bg-sandal-50 border border-sandal-200 rounded-xl p-2"
         >
-          Search
-        </button>
-      </form>
+          <div className="pl-3 pr-2 text-sandal-700">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <input
+            type="text"
+            value={query}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            placeholder="e.g. Al-Fatiha · 2:255 · verse about patience"
+            className="flex-1 bg-transparent border-none outline-none font-lora text-[17px] text-sandal-900 placeholder-sandal-500 min-w-0"
+          />
+          <button
+            type="submit"
+            className="ml-2 px-6 py-2 bg-sandal-700 text-white font-cormorant text-[16px] rounded-lg hover:bg-sandal-900 transition-all duration-300 ease-in-out"
+          >
+            Search
+          </button>
+        </form>
+
+        {suggestions.length > 0 && (
+          <div className="absolute top-full left-0 w-full bg-white border border-sandal-200 rounded-xl shadow-lg mt-2 overflow-hidden z-50 text-left">
+            {suggestions.map((s) => (
+              <button
+                key={s.number}
+                type="button"
+                onClick={() => handleSuggestionClick(s)}
+                className="w-full px-4 py-3 text-left border-b border-sandal-100 last:border-b-0 hover:bg-sandal-50 transition-colors duration-150 flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-sandal-100 text-sandal-700 rounded-full font-inter text-xs font-bold">
+                    {s.number}
+                  </span>
+                  <div>
+                    <div className="font-inter font-semibold text-sandal-900 text-[15px]">{s.nameTransliterated}</div>
+                    <div className="font-lora text-sandal-500 text-[13px]">{s.nameEnglish}</div>
+                  </div>
+                </div>
+                <div className="font-amiri text-sandal-700 text-lg" dir="rtl">{s.nameArabic}</div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
         {['Ayatul Kursi', 'Al-Fatiha', 'Surah Yasin'].map((suggestion) => (
