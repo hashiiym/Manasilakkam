@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
+
+  const getDesktopLinkClass = (path) => {
+    return location.pathname === path
+      ? "text-sm font-semibold text-sandal-800"
+      : "text-sm font-medium text-sandal-600 hover:text-sandal-900 transition-colors";
+  };
+
+  const getMobileLinkClass = (path, baseClasses) => {
+    return location.pathname === path
+      ? `${baseClasses} text-sm font-semibold text-sandal-800`
+      : `${baseClasses} text-sm font-medium text-sandal-600 hover:text-sandal-900 transition-colors`;
+  };
 
   return (
     <header className="py-4 md:py-6 flex items-center justify-between border-b border-sandal-100 mb-8 relative z-50">
@@ -14,15 +27,15 @@ const Header = () => {
       </Link>
       
       {/* Desktop Nav */}
-      <nav className="hidden md:flex gap-6 text-sandal-900 font-inter font-medium">
-        <Link to="/browse" className="hover:text-sandal-700 transition-colors">
-          Browse
+      <nav className="hidden md:flex gap-6 font-inter items-center">
+        <Link to="/browse" className={getDesktopLinkClass('/browse')}>
+          Browse Surahs
         </Link>
-        <Link to="/tasbih" className="hover:text-sandal-700 transition-colors">
-          Tasbih
+        <Link to="/tasbih" className={getDesktopLinkClass('/tasbih')}>
+          Tasbih Counter
         </Link>
-        <Link to="/about" className="hover:text-sandal-700 transition-colors">
-          About
+        <Link to="/about" className={getDesktopLinkClass('/about')}>
+          About Project
         </Link>
       </nav>
 
@@ -44,27 +57,27 @@ const Header = () => {
       {/* Mobile Nav Dropdown */}
       {isOpen && (
         <div className="absolute top-full left-0 right-0 bg-white border-b border-sandal-200 shadow-sm md:hidden animate-fadeIn">
-          <nav className="flex flex-col py-2 px-4 text-sandal-900 font-inter font-medium">
+          <nav className="flex flex-col py-2 px-4 font-inter">
             <Link 
               to="/browse" 
-              className="py-3 border-b border-sandal-100 hover:text-sandal-700"
+              className={getMobileLinkClass('/browse', 'py-3 border-b border-sandal-100')}
               onClick={closeMenu}
             >
               Browse Surahs
             </Link>
             <Link 
               to="/tasbih" 
-              className="py-3 border-b border-sandal-100 hover:text-sandal-700"
+              className={getMobileLinkClass('/tasbih', 'py-3 border-b border-sandal-100')}
               onClick={closeMenu}
             >
-              Digital Tasbih
+              Tasbih Counter
             </Link>
             <Link 
               to="/about" 
-              className="py-3 hover:text-sandal-700"
+              className={getMobileLinkClass('/about', 'py-3')}
               onClick={closeMenu}
             >
-              About
+              About Project
             </Link>
           </nav>
         </div>
