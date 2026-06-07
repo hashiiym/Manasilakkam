@@ -5,7 +5,7 @@ import ResultCard from '../components/result/ResultCard';
 import ResultSkeleton from '../components/result/ResultSkeleton';
 import { SURAHS } from '../constants/surahs';
 
-const CHUNK_SIZE = 10;
+const CHUNK_SIZE = 6;
 
 const ResultPage = () => {
   const { id, surah, ayah } = useParams();
@@ -14,7 +14,8 @@ const ResultPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentChunk, setCurrentChunk] = useState(1);
 
-  const query = surah && ayah ? `${surah}:${ayah}` : id;
+  const rawQuery = surah && ayah ? `${surah}:${ayah}` : id;
+  const query = rawQuery ? decodeURIComponent(rawQuery) : undefined;
 
   // Reset chunk when the route parameters change
   useEffect(() => {
