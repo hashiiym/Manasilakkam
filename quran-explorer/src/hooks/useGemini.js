@@ -7,6 +7,10 @@ export const useGemini = () => {
   const abortControllerRef = useRef(null);
 
   const search = useCallback(async (query) => {
+    // Normalize query
+    const normalizedQuery = query.toLowerCase().replace(/\s+/g, ' ').trim();
+    const cacheKey = `manasilakkam_cache_${normalizedQuery}`;
+
     // Abort previous in-flight request
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -18,6 +22,19 @@ export const useGemini = () => {
     setLoading(true);
     setError(null);
     setResult(null);
+
+    // 1. Check local cache first for an exact match
+    try {
+      const cachedData = localStorage.getItem(cacheKey);
+      if (cachedData) {
+        const parsed = JSON.parse(cachedData);
+        setResult(parsed);
+        setLoading(false);
+        return; // Early return, avoid network request
+      }
+    } catch (e) {
+      console.warn('Error reading from localStorage:', e);
+    }
 
     // Set loading favicon
     const favicon = document.querySelector("link[rel~='icon']");
@@ -51,6 +68,13 @@ export const useGemini = () => {
         throw { type: 'not_quran', message: data.message };
       }
 
+      // 2. Save successful fetch to cache
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+      } catch (e) {
+        console.warn('Error writing to localStorage:', e);
+      }
+
       setResult(data);
     } catch (err) {
       if (err.name === 'AbortError') {
@@ -58,6 +82,33 @@ export const useGemini = () => {
         return;
       }
       
+      // 3. Rate Limit (429) Smart Fallback
+      if (err.type === 'rate_limit') {
+        try {
+          // Look for any partial or similar match in localStorage
+          let fallbackData = null;
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('manasilakkam_cache_')) {
+              const cachedQuery = key.replace('manasilakkam_cache_', '');
+              // If the cached query is a substring of the requested query, or vice-versa
+              if (cachedQuery.includes(normalizedQuery) || normalizedQuery.includes(cachedQuery)) {
+                fallbackData = JSON.parse(localStorage.getItem(key));
+                break;
+              }
+            }
+          }
+
+          if (fallbackData) {
+            // Append a non-breaking property to indicate it's a fallback cache
+            setResult({ ...fallbackData, isCachedFallback: true });
+            return; // Skip setting the error state
+          }
+        } catch (fallbackErr) {
+          console.warn('Error fetching fallback from localStorage:', fallbackErr);
+        }
+      }
+
       const errorState = {
         type: err.type || 'unknown',
         message: err.message || 'An unexpected error occurred.'

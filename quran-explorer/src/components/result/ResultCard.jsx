@@ -52,6 +52,13 @@ const ResultCard = ({ result }) => {
           ) : (
             <span className="text-sandal-700">{result.surah_name_english}</span>
           )}
+          
+          {result.isCachedFallback && (
+            <span className="ml-3 px-2 py-0.5 bg-sandal-100 text-sandal-700 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1 border border-sandal-200" title="This result is being loaded from your local history because the API is currently rate limited.">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+              Viewing cached version
+            </span>
+          )}
         </div>
 
         <button 
