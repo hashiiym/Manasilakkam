@@ -22,6 +22,12 @@ export default async function handler(req) {
       });
     }
 
+    let safeQuery = query;
+    // If the frontend asks for a Surah but forgets to specify a verse chunk, force it.
+    if (!safeQuery.toLowerCase().includes('verse')) {
+      safeQuery = `${safeQuery}, focus ONLY on verses 1 to 6`;
+    }
+
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey || apiKey === 'your_key_here') {
       return new Response(JSON.stringify({ error: true, message: 'Groq API key not configured correctly' }), { 
@@ -42,10 +48,11 @@ export default async function handler(req) {
         model: 'llama-3.3-70b-versatile',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: `Search Query: ${query}` }
+          { role: 'user', content: `Search Query: ${safeQuery}` }
         ],
         response_format: { type: 'json_object' },
-        temperature: 0.3
+        temperature: 0.3,
+        max_tokens: 3500
       })
     });
 
