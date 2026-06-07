@@ -18,6 +18,9 @@ const Header = () => {
         <Link to="/browse" className="hover:text-sandal-700 transition-colors">
           Browse
         </Link>
+        <Link to="/tasbih" className="hover:text-sandal-700 transition-colors">
+          Tasbih
+        </Link>
         <Link to="/about" className="hover:text-sandal-700 transition-colors">
           About
         </Link>
@@ -48,6 +51,13 @@ const Header = () => {
               onClick={closeMenu}
             >
               Browse Surahs
+            </Link>
+            <Link 
+              to="/tasbih" 
+              className="py-3 border-b border-sandal-100 hover:text-sandal-700"
+              onClick={closeMenu}
+            >
+              Digital Tasbih
             </Link>
             <Link 
               to="/about" 

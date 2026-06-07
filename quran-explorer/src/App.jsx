@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import ResultPage from './pages/ResultPage';
 import BrowsePage from './pages/BrowsePage';
 import AboutPage from './pages/AboutPage';
+import TasbihPage from './pages/TasbihPage';
 
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/surah/:id" element={<ResultPage />} />
           <Route path="/verse/:surah/:ayah" element={<ResultPage />} />
           <Route path="/browse" element={<BrowsePage />} />
+          <Route path="/tasbih" element={<TasbihPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
