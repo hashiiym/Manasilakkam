@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { surahs } from '../../constants/surahs';
+import { SURAHS } from '../../constants/surahs';
 
 const SearchHero = () => {
   const [query, setQuery] = useState('');
@@ -18,7 +18,7 @@ const SearchHero = () => {
     }
 
     const lowerVal = value.toLowerCase();
-    const filtered = surahs.filter((s) => 
+    const filtered = SURAHS.filter((s) => 
       s.nameEnglish.toLowerCase().includes(lowerVal) ||
       s.nameTransliterated.toLowerCase().includes(lowerVal) ||
       s.nameArabic.includes(value) ||
