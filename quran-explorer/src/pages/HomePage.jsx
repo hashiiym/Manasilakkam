@@ -20,7 +20,6 @@ const HomePage = () => {
       <main className="flex-1">
         <SearchHero />
       </main>
-      <Footer />
     </div>
   );
 };
