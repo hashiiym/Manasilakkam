@@ -26,25 +26,13 @@ const Header = () => {
         Manasilakkam
       </Link>
       
-      {/* Desktop Nav */}
-      <nav className="hidden md:flex gap-6 font-inter items-center">
-        <Link to="/browse" className={getDesktopLinkClass('/browse')}>
-          Browse Surahs
-        </Link>
-        <Link to="/tasbih" className={getDesktopLinkClass('/tasbih')}>
-          Tasbih Counter
-        </Link>
-        <Link to="/about" className={getDesktopLinkClass('/about')}>
-          About Project
-        </Link>
-      </nav>
-
-      {/* Mobile Hamburger Button */}
+      {/* Menu Button */}
       <button 
-        className="md:hidden p-2 text-sandal-700 focus:outline-none"
+        className="p-2 text-sandal-700 focus:outline-none flex items-center gap-2 hover:bg-sandal-50 rounded-lg transition-colors"
         onClick={toggleMenu}
         aria-label="Toggle menu"
       >
+        <span className="hidden md:block font-inter font-medium text-[15px]">Menu</span>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
           {isOpen ? (
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -54,27 +42,27 @@ const Header = () => {
         </svg>
       </button>
 
-      {/* Mobile Nav Dropdown */}
+      {/* Nav Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white border-b border-sandal-200 shadow-sm md:hidden animate-fadeIn">
-          <nav className="flex flex-col py-2 px-4 font-inter">
+        <div className="absolute top-[100%] left-0 right-0 md:left-auto md:w-56 md:right-0 bg-white border-b md:border border-sandal-200 shadow-sm md:shadow-md md:rounded-xl md:mt-2 animate-fadeIn z-50">
+          <nav className="flex flex-col py-2 px-4 md:px-2 font-inter">
             <Link 
               to="/browse" 
-              className={getMobileLinkClass('/browse', 'py-3 border-b border-sandal-100')}
+              className={getMobileLinkClass('/browse', 'py-3 border-b border-sandal-100 md:border-none md:rounded-lg md:px-3 md:py-2.5 md:hover:bg-sandal-50')}
               onClick={closeMenu}
             >
               Browse Surahs
             </Link>
             <Link 
               to="/tasbih" 
-              className={getMobileLinkClass('/tasbih', 'py-3 border-b border-sandal-100')}
+              className={getMobileLinkClass('/tasbih', 'py-3 border-b border-sandal-100 md:border-none md:rounded-lg md:px-3 md:py-2.5 md:hover:bg-sandal-50')}
               onClick={closeMenu}
             >
               Tasbih Counter
             </Link>
             <Link 
               to="/about" 
-              className={getMobileLinkClass('/about', 'py-3')}
+              className={getMobileLinkClass('/about', 'py-3 md:rounded-lg md:px-3 md:py-2.5 md:hover:bg-sandal-50')}
               onClick={closeMenu}
             >
               About Project
