@@ -61,15 +61,23 @@ const SearchHero = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] text-center animate-fadeIn px-4">
-      <h1 className="font-cormorant text-[48px] text-sandal-700 mb-4 leading-tight">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] text-center animate-fadeIn px-4 relative overflow-hidden z-0">
+      
+      {/* Decorative Background Texture */}
+      <img 
+        src="/mandala-bg.jpg" 
+        alt="" 
+        className="absolute -z-10 pointer-events-none select-none opacity-20 mix-blend-multiply transition-all duration-700 top-0 -right-16 w-80 md:-top-10 md:-right-20 md:w-[500px] lg:-top-20 lg:-right-40 lg:w-[800px]" 
+      />
+
+      <h1 className="font-cormorant text-[48px] text-sandal-700 mb-4 leading-tight relative z-10">
         Manasilakkam
       </h1>
-      <p className="font-lora text-[18px] text-sandal-500 mb-8 max-w-[600px]">
+      <p className="font-lora text-[18px] text-sandal-500 mb-8 max-w-[600px] relative z-10">
         Understand the Quran deeply — search by Surah name, verse reference, or topic
       </p>
 
-      <div className={`relative w-full max-w-[560px] transition-transform ${isShaking ? 'animate-shake' : ''}`}>
+      <div className={`relative z-10 w-full max-w-[560px] transition-transform ${isShaking ? 'animate-shake' : ''}`}>
         <form 
           onSubmit={handleSearch} 
           className="w-full flex items-center bg-sandal-50 border border-sandal-200 rounded-xl p-2"
@@ -121,7 +129,7 @@ const SearchHero = () => {
         )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
+      <div className="flex flex-wrap items-center justify-center gap-3 mt-6 relative z-10">
         {['Ayatul Kursi', 'Al-Fatiha', 'Surah Yasin'].map((suggestion) => (
           <button
             key={suggestion}
@@ -134,9 +142,9 @@ const SearchHero = () => {
         ))}
       </div>
 
-      <div className="w-full max-w-[400px] h-px bg-sandal-200 my-8"></div>
+      <div className="w-full max-w-[400px] h-px bg-sandal-200 my-8 relative z-10"></div>
 
-      <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 font-inter text-[13px] text-sandal-500">
+      <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 font-inter text-[13px] text-sandal-500 relative z-10">
         <div className="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
           Arabic text
